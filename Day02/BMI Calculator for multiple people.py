@@ -14,4 +14,4 @@ for person in people
     bmi = person["weight"] / (person["height"] ** 2)
 
     print(person["name"], "- BMI:", round(bmi, 2))
-    print("new3")
+    print("new0004")
