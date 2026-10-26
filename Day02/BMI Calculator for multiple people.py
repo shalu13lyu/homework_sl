@@ -10,7 +10,8 @@ people = [
 ]
 
 # Calculate BMI for each person
-for person in people:
+for person in people
     bmi = person["weight"] / (person["height"] ** 2)
 
     print(person["name"], "- BMI:", round(bmi, 2))
+    print("new2")
