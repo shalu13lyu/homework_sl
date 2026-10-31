@@ -1,21 +1,18 @@
-Day 02 Assigment
-In this week's assignment, we practiced how to clone a repository from GitHub and work on it locally on our computers.
+# Python Course 2026 — My Assignments
 
-Luckily, I already had Git, VSCode and Python3 installed on my computer, so I could get started right away!
+This repository contains my assignments for the Programming with AI course at the Weizmann Institute of Science.
 
-What I did
-Created a new public GitHub repository called course_assignments.
-Cloned the repository to my computer using VSCode.
-Created a folder called day02.
-Created a Python file called hello.py.
-Wrote a simple Python program that prints "Hello World".
-Opened the terminal in VSCode and ran the program using: python3 day02/hello.py
-Verified that the program printed "Hello World" successfully.
-What I learned
-How to create and clone a GitHub repository.
-How to create and run a Python file in VSCode.
-How to use the terminal from VSCode to run Python programs.
-Tools I used
-Git and Github
-VSCode
-ChatGPT
+## Course Goals
+
+I am learning how to:
+- Write and run Python programs using VS Code.
+- Use Git to track changes in my code.
+- Upload projects to GitHub.
+- Use AI tools to support my learning.
+
+## Assignments
+
+- **day01:** Creating my first HTML website using AI.
+- **day02:** Installing and using Python, creating Python programs, and practicing Git and GitHub.
+
+Each folder contains the assignment files and a README explaining my workflow.
