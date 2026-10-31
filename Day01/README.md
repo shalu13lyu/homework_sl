@@ -10,5 +10,8 @@ Creating my first academic website using HTML, CSS and AI.
 4. Opened the website in a browser.
 5. Learned how HTML and CSS work.
 
+## My website 
+https://shalu13lyu.github.io/
+
 ## What I Learned
 HTML defines the structure of a webpage, while CSS controls its design.
