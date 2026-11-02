@@ -1,0 +1,5 @@
+print("Shahar")
+print("Noa")
+print("Daniel")
+print("Maya")
+print("David")
