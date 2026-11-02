@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smile Gallery</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      color: #293b36;
+      background: #f8f6ee;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 48px 20px;
+      display: grid;
+      place-items: center;
+    }
+
+    main {
+      width: min(100%, 760px);
+      padding: clamp(24px, 6vw, 52px);
+      border: 1px solid #e8e4d8;
+      border-radius: 28px;
+      background: #fffefa;
+      box-shadow: 0 18px 55px #4b514514;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #688477;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      letter-spacing: -0.05em;
+    }
+
+    .intro {
+      margin: 12px 0 28px;
+      color: #68756f;
+      line-height: 1.6;
+    }
+
+    .featured {
+      display: grid;
+      min-height: 260px;
+      margin: 0 auto 34px;
+      place-content: center;
+      gap: 8px;
+      border-radius: 22px;
+      background: #f1f5e9;
+    }
+
+    .featured-face {
+      font-size: clamp(7rem, 24vw, 11rem);
+      line-height: 1;
+      animation: pop-in 220ms ease-out;
+    }
+
+    .featured-name {
+      margin: 0;
+      color: #526a5d;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 1rem;
+    }
+
+    .smile-list {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .smile-choice {
+      display: grid;
+      min-width: 0;
+      padding: 12px 6px;
+      place-items: center;
+      gap: 6px;
+      border: 2px solid transparent;
+      border-radius: 16px;
+      background: #f8f6ee;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+    }
+
+    .smile-choice:hover {
+      transform: translateY(-3px);
+      background: #f1f5e9;
+    }
+
+    .smile-choice[aria-pressed="true"] {
+      border-color: #7d9b84;
+      background: #f1f5e9;
+    }
+
+    .smile-choice:focus-visible {
+      outline: 3px solid #d59b74;
+      outline-offset: 3px;
+    }
+
+    .choice-face {
+      font-size: clamp(1.8rem, 6vw, 2.5rem);
+      line-height: 1.2;
+    }
+
+    .choice-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    @keyframes pop-in {
+      from { transform: scale(0.8); opacity: 0.5; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 20px 12px;
+      }
+
+      main {
+        border-radius: 22px;
+      }
+
+      .featured {
+        min-height: 220px;
+      }
+
+      .smile-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">A little happiness</p>
+    <h1>Smile Gallery</h1>
+    <p class="intro">Pick a smile and see it up close.</p>
+
+    <section class="featured" aria-live="polite" aria-atomic="true" aria-label="Selected smile">
+      <span class="featured-face" id="featured-face" role="img" aria-label="Happy smile">😀</span>
+      <p class="featured-name" id="featured-name">Happy</p>
+    </section>
+
+    <h2>Choose your smile</h2>
+    <div class="smile-list" aria-label="Smile choices">
+      <button class="smile-choice" type="button" data-face="😀" data-name="Happy" aria-pressed="true">
+        <span class="choice-face" aria-hidden="true">😀</span>
+        <span class="choice-name">Happy</span>
+      </button>
+      <button class="smile-choice" type="button" data-face="😁" data-name="Big grin" aria-pressed="false">
+        <span class="choice-face" aria-hidden="true">😁</span>
+        <span class="choice-name">Big grin</span>
+      </button>
+      <button class="smile-choice" type="button" data-face="😊" data-name="Sweet" aria-pressed="false">
+        <span class="choice-face" aria-hidden="true">😊</span>
+        <span class="choice-name">Sweet</span>
+      </button>
+      <button class="smile-choice" type="button" data-face="😄" data-name="Laughing" aria-pressed="false">
+        <span class="choice-face" aria-hidden="true">😄</span>
+        <span class="choice-name">Laughing</span>
+      </button>
+      <button class="smile-choice" type="button" data-face="😎" data-name="Cool" aria-pressed="false">
+        <span class="choice-face" aria-hidden="true">😎</span>
+        <span class="choice-name">Cool</span>
+      </button>
+      <button class="smile-choice" type="button" data-face="🥰" data-name="Loved" aria-pressed="false">
+        <span class="choice-face" aria-hidden="true">🥰</span>
+        <span class="choice-name">Loved</span>
+      </button>
+    </div>
+  </main>
+
+  <script>
+    const featuredFace = document.querySelector("#featured-face");
+    const featuredName = document.querySelector("#featured-name");
+    const smileChoices = document.querySelectorAll(".smile-choice");
+
+    smileChoices.forEach((choice) => {
+      choice.addEventListener("click", () => {
+        const face = choice.dataset.face;
+        const name = choice.dataset.name;
+
+        featuredFace.textContent = face;
+        featuredFace.setAttribute("aria-label", `${name} smile`);
+        featuredName.textContent = name;
+
+        smileChoices.forEach((item) => {
+          item.setAttribute("aria-pressed", String(item === choice));
+        });
+
+        featuredFace.style.animation = "none";
+        void featuredFace.offsetWidth;
+        featuredFace.style.animation = "";
+      });
+    });
+  </script>
+</body>
+</html>
