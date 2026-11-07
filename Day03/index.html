@@ -1,228 +1,288 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smile Gallery</title>
-  <style>
-    :root {
-      color-scheme: light;
-      font-family: "Trebuchet MS", Arial, sans-serif;
-      color: #293b36;
-      background: #f8f6ee;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    * {
-      box-sizing: border-box;
-    }
+<title>EM Vesicle Counter</title>
 
-    body {
-      min-height: 100vh;
-      margin: 0;
-      padding: 48px 20px;
-      display: grid;
-      place-items: center;
-    }
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fb;
+    margin: 0;
+    color: #263445;
+}
 
-    main {
-      width: min(100%, 760px);
-      padding: clamp(24px, 6vw, 52px);
-      border: 1px solid #e8e4d8;
-      border-radius: 28px;
-      background: #fffefa;
-      box-shadow: 0 18px 55px #4b514514;
-      text-align: center;
-    }
+header {
+    background-color: #183153;
+    color: white;
+    text-align: center;
+    padding: 35px;
+}
 
-    .eyebrow {
-      margin: 0 0 10px;
-      color: #688477;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
+main {
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px #00000015;
+}
 
-    h1 {
-      margin: 0;
-      font-size: clamp(2rem, 6vw, 3.2rem);
-      letter-spacing: -0.05em;
-    }
+h2 {
+    color: #183153;
+}
 
-    .intro {
-      margin: 12px 0 28px;
-      color: #68756f;
-      line-height: 1.6;
-    }
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 16px;
+}
 
-    .featured {
-      display: grid;
-      min-height: 260px;
-      margin: 0 auto 34px;
-      place-content: center;
-      gap: 8px;
-      border-radius: 22px;
-      background: #f1f5e9;
-    }
+button:hover {
+    background: #1d4ed8;
+}
 
-    .featured-face {
-      font-size: clamp(7rem, 24vw, 11rem);
-      line-height: 1;
-      animation: pop-in 220ms ease-out;
-    }
+canvas, #resultImage {
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+    border-radius: 8px;
+}
 
-    .featured-name {
-      margin: 0;
-      color: #526a5d;
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
+canvas {
+    cursor: crosshair;
+}
 
-    h2 {
-      margin: 0 0 16px;
-      font-size: 1rem;
-    }
+#result {
+    display: none;
+    background: #edf7f0;
+    padding: 20px;
+    margin-top: 25px;
+    border-radius: 10px;
+}
 
-    .smile-list {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 12px;
-    }
+#count {
+    font-size: 42px;
+    font-weight: bold;
+    color: #16803c;
+}
 
-    .smile-choice {
-      display: grid;
-      min-width: 0;
-      padding: 12px 6px;
-      place-items: center;
-      gap: 6px;
-      border: 2px solid transparent;
-      border-radius: 16px;
-      background: #f8f6ee;
-      color: inherit;
-      cursor: pointer;
-      font: inherit;
-      transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
-    }
-
-    .smile-choice:hover {
-      transform: translateY(-3px);
-      background: #f1f5e9;
-    }
-
-    .smile-choice[aria-pressed="true"] {
-      border-color: #7d9b84;
-      background: #f1f5e9;
-    }
-
-    .smile-choice:focus-visible {
-      outline: 3px solid #d59b74;
-      outline-offset: 3px;
-    }
-
-    .choice-face {
-      font-size: clamp(1.8rem, 6vw, 2.5rem);
-      line-height: 1.2;
-    }
-
-    .choice-name {
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    @keyframes pop-in {
-      from { transform: scale(0.8); opacity: 0.5; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    @media (max-width: 520px) {
-      body {
-        padding: 20px 12px;
-      }
-
-      main {
-        border-radius: 22px;
-      }
-
-      .featured {
-        min-height: 220px;
-      }
-
-      .smile-list {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+#status {
+    margin-top: 15px;
+}
+</style>
 </head>
+
 <body>
-  <main>
-    <p class="eyebrow">A little happiness</p>
-    <h1>Smile Gallery</h1>
-    <p class="intro">Pick a smile and see it up close.</p>
 
-    <section class="featured" aria-live="polite" aria-atomic="true" aria-label="Selected smile">
-      <span class="featured-face" id="featured-face" role="img" aria-label="Happy smile">😀</span>
-      <p class="featured-name" id="featured-name">Happy</p>
-    </section>
+<header>
+    <h1>EM Vesicle Counter</h1>
+    <p>Automatic Vesicle Detection in TEM Images</p>
+</header>
 
-    <h2>Choose your smile</h2>
-    <div class="smile-list" aria-label="Smile choices">
-      <button class="smile-choice" type="button" data-face="😀" data-name="Happy" aria-pressed="true">
-        <span class="choice-face" aria-hidden="true">😀</span>
-        <span class="choice-name">Happy</span>
-      </button>
-      <button class="smile-choice" type="button" data-face="😁" data-name="Big grin" aria-pressed="false">
-        <span class="choice-face" aria-hidden="true">😁</span>
-        <span class="choice-name">Big grin</span>
-      </button>
-      <button class="smile-choice" type="button" data-face="😊" data-name="Sweet" aria-pressed="false">
-        <span class="choice-face" aria-hidden="true">😊</span>
-        <span class="choice-name">Sweet</span>
-      </button>
-      <button class="smile-choice" type="button" data-face="😄" data-name="Laughing" aria-pressed="false">
-        <span class="choice-face" aria-hidden="true">😄</span>
-        <span class="choice-name">Laughing</span>
-      </button>
-      <button class="smile-choice" type="button" data-face="😎" data-name="Cool" aria-pressed="false">
-        <span class="choice-face" aria-hidden="true">😎</span>
-        <span class="choice-name">Cool</span>
-      </button>
-      <button class="smile-choice" type="button" data-face="🥰" data-name="Loved" aria-pressed="false">
-        <span class="choice-face" aria-hidden="true">🥰</span>
-        <span class="choice-name">Loved</span>
-      </button>
-    </div>
-  </main>
+<main>
 
-  <script>
-    const featuredFace = document.querySelector("#featured-face");
-    const featuredName = document.querySelector("#featured-name");
-    const smileChoices = document.querySelectorAll(".smile-choice");
+<h2>Step 1 — Upload your TEM image</h2>
 
-    smileChoices.forEach((choice) => {
-      choice.addEventListener("click", () => {
-        const face = choice.dataset.face;
-        const name = choice.dataset.name;
+<input type="file" id="imageInput"
+       accept="image/png,image/jpeg,image/bmp,image/webp">
 
-        featuredFace.textContent = face;
-        featuredFace.setAttribute("aria-label", `${name} smile`);
-        featuredName.textContent = name;
+<h2>Step 2 — Select a carbon-grid hole</h2>
 
-        smileChoices.forEach((item) => {
-          item.setAttribute("aria-pressed", String(item === choice));
+<p>
+Click the center of the circular grid hole.
+Adjust the radius to select the area you want to analyze.
+</p>
+
+<label for="radius">Hole radius (pixels):</label>
+
+<input type="range" id="radius"
+       min="20" max="300" value="105">
+
+<span id="radiusValue">105</span>
+
+<canvas id="canvas"></canvas>
+
+<p>
+<button id="analyzeButton">Count Vesicles</button>
+</p>
+
+<p id="status"></p>
+
+<section id="result">
+    <h2>Step 3 — Analysis Results</h2>
+
+    <p>Detected vesicle candidates:</p>
+
+    <div id="count"></div>
+
+    <img id="resultImage" alt="Detected vesicles">
+
+    <p>
+    Green circles represent detected vesicle candidates.
+    The yellow circle marks the selected carbon-grid hole.
+    </p>
+</section>
+
+</main>
+
+<script>
+
+// Get HTML elements
+const imageInput = document.getElementById("imageInput");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const radiusSlider = document.getElementById("radius");
+const radiusValue = document.getElementById("radiusValue");
+
+const statusText = document.getElementById("status");
+
+let image = new Image();
+let selectedFile = null;
+let centerX = null;
+let centerY = null;
+
+
+// Draw image and selected circular region
+function drawImage() {
+
+    if (!selectedFile) return;
+
+    ctx.drawImage(image, 0, 0);
+
+    if (centerX !== null && centerY !== null) {
+
+        ctx.beginPath();
+
+        ctx.arc(
+            centerX,
+            centerY,
+            Number(radiusSlider.value),
+            0,
+            2 * Math.PI
+        );
+
+        ctx.strokeStyle = "yellow";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+}
+
+
+// Upload image
+imageInput.addEventListener("change", function () {
+
+    selectedFile = imageInput.files[0];
+
+    if (!selectedFile) return;
+
+    centerX = null;
+    centerY = null;
+
+    document.getElementById("result").style.display = "none";
+
+    const url = URL.createObjectURL(selectedFile);
+
+    image.onload = function () {
+
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+
+        drawImage();
+
+        URL.revokeObjectURL(url);
+
+        statusText.textContent = "Click the center of a grid hole.";
+    };
+
+    image.src = url;
+});
+
+
+// Select the grid hole by clicking on the image
+canvas.addEventListener("click", function (event) {
+
+    if (!selectedFile) return;
+
+    const rect = canvas.getBoundingClientRect();
+
+    centerX = Math.round(
+        (event.clientX - rect.left) *
+        canvas.width / rect.width
+    );
+
+    centerY = Math.round(
+        (event.clientY - rect.top) *
+        canvas.height / rect.height
+    );
+
+    drawImage();
+});
+
+
+// Change the selected hole radius
+radiusSlider.addEventListener("input", function () {
+
+    radiusValue.textContent = radiusSlider.value;
+
+    drawImage();
+});
+
+
+// Send image to Python for vesicle counting
+document.getElementById("analyzeButton")
+.addEventListener("click", async function () {
+
+    if (!selectedFile || centerX === null) {
+        alert("Please upload an image and select a grid hole.");
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append("image", selectedFile);
+    formData.append("center_x", centerX);
+    formData.append("center_y", centerY);
+    formData.append("radius", radiusSlider.value);
+
+    statusText.textContent = "Analyzing image...";
+
+    try {
+
+        const response = await fetch("/analyze", {
+            method: "POST",
+            body: formData
         });
 
-        featuredFace.style.animation = "none";
-        void featuredFace.offsetWidth;
-        featuredFace.style.animation = "";
-      });
-    });
-  </script>
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Analysis failed");
+        }
+
+        document.getElementById("count").textContent = data.count;
+
+        document.getElementById("resultImage").src = data.image;
+
+        document.getElementById("result").style.display = "block";
+
+        statusText.textContent = "Analysis complete!";
+
+    } catch (error) {
+        statusText.textContent = "Error: " + error.message;
+    }
+});
+
+</script>
+
 </body>
 </html>
