@@ -1,86 +1,81 @@
-# Day 03 Assignment
+# Day 04 Assignment — EM Vesicle Counter Website
 
-In this week's assignment, we learned how to use AI in VS Code to write a Python program.
+## What I Did
 
-## What I did
+For this week's assignment, I continued working on my Day03 project, an EM Vesicle Counter website related to my PhD research.
 
-I decided to work with transmission electron microscopy (TEM) images, since this is related to my PhD research.
+The goal of my project is to automatically detect and count circular vesicles inside a selected carbon-grid hole in transmission electron microscopy (TEM) images.
 
-I wanted to create a website where I could upload an EM image of a carbon grid and automatically count how many circular vesicles are located inside a selected grid hole.
+I copied my previous project into a new `Day04` folder to keep the original version unchanged. I continued developing the application using Python, Flask, OpenCV, HTML, CSS, and JavaScript.
 
-I used Python with OpenCV to detect circular structures in the image, and Flask, HTML, CSS, and JavaScript to create an interactive website.
-
-The website allows the user to upload an image, select a carbon-grid hole, and get the number of detected vesicle candidates. It also displays the image with green circles marking the detected structures.
+For Day04, I wanted to improve the counting process by adding manual correction options and make the website accessible to other people through a public link.
 
 ## My Workflow
 
-1. **Choosing the project:** I chose vesicle counting because analyzing TEM images is related to my research, and I wanted to automate part of the image analysis.
+1. **Creating Day04:** I created a new `Day04` folder and copied my Day03 files to keep the original project intact.
 
-2. **Creating `detector.py`:** I used Python and OpenCV to detect circular structures using the Hough Circle Transform and count those inside a selected grid hole.
+2. **Testing the application:** I checked that both the original Day03 application and the copied Day04 application were working.
 
-3. **Creating `app.py`:** I used Flask to connect the Python detection function to the website, so users can upload their own images.
+3. **Improving the website:** I updated `index.html` to add a manual correction interface. The user can add missed vesicles, undo corrections, and reset the results. I also added an option for removing detections, although this feature still needs improvement.
 
-4. **Creating `index.html`:** I used HTML, CSS, and JavaScript to design the website, allow users to select a circular region, and display the results.
+4. **Preparing for deployment:** I updated `requirements.txt` to include the libraries needed to run the application on a server.
 
-5. **Testing the website:** I ran the Python application in VS Code and opened the website in Chrome to test the image upload and vesicle detection.
+5. **Connecting GitHub to Render:** I connected my GitHub repository to Render to publish the website online.
 
-6. **GitHub:** I prepared the project files for version control and sharing through GitHub.
+6. **Testing the public website:** After fixing a deployment error, I successfully opened the website using the public Render link.
+
+## Deploying My Website Using Render
+
+For Day04, I wanted to make my EM Vesicle Counter website accessible to other people, not only on my computer.
+
+First, I updated `requirements.txt` and added Gunicorn, which is a production web server used to run Flask applications. I also changed OpenCV to the headless version because the server does not need a graphical interface.
+
+Next, I pushed my Day04 files to GitHub and connected my `homework_sl` repository to Render. I selected Python, set the Root Directory to `Day04`, and configured the build command (`pip install -r requirements.txt`) and start command (`gunicorn app:app`).
+
+My first deployment failed because Render could not find `requirements.txt`. After correcting the Root Directory, the deployment succeeded.
+
+Render now runs my Flask application on a cloud server, allowing other people to upload TEM images and use my vesicle-counting website.
+
+**Public website:** [https://homework-sl.onrender.com/](https://homework-sl.onrender.com/)
 
 ## Prompts I Used
 
-My first prompt was:
+I used AI to help improve my application and understand how to publish it online.
 
-> I specifically want to do a program that counts how many circular vesicles there are in a circle of a carbon grid, like in the TEM image I uploaded.
+Some of my prompts were:
 
-At first, I planned to create only a Python program, but then I decided to make it more interactive by creating a website.
+> DAY 04 - assignment - continuing day 3.
 
-My next prompt was:
+> Modify Day04/index.html — just give a new script that I will delete what I had and write again.
 
-> From the beginning, I want to create using VS Code an HTML website that, when you upload a picture of a grid EM, counts how many circular vesicles there are in a circle of a carbon grid and tells you the result.
+> Can I do this part without paying — just add a code? If yes, I want to do it.
 
-I then asked AI to guide me through creating the Python files:
+> How to connect to Day04? I need a link to the configuration page.
 
-> I created and saved detector.py. Please guide me through the next step: creating app.py in VS Code.
+> Deploy failed.
 
-Finally, I asked for help creating the HTML website:
+> I opened https://homework-sl.onrender.com/ successfully — so now it is public, what is happening?
 
-> I created index.html. Write at least a few stages for me to do.
-
-## Results
-
-I created a local website that allows users to upload TEM images, select a carbon-grid hole, and automatically count circular vesicle candidates.
-
-The detection is still preliminary, and the parameters may need to be adjusted to improve accuracy.
-
-## Website Address
-
-**[http://127.0.0.1:5000](http://127.0.0.1:5000)**
-
-This website runs locally on my computer using Flask.
-
-To open the website, first run the Python application in VS Code:
-
-`py app.py`
-
-Then open the address above in a web browser.
+I also asked AI to explain why Gunicorn was needed and how GitHub, Flask, and Render work together.
 
 ## Project Files
 
-- `detector.py` — Detects and counts circular vesicle candidates.
-- `app.py` — Connects Python to the website using Flask.
-- `index.html` — Website interface for uploading images and displaying results.
-- `requirements.txt` — Lists the required Python libraries.
+- `app.py` — Flask application that connects the website to the Python program.
+- `detector.py` — Python script that detects and counts circular vesicle candidates using OpenCV.
+- `index.html` — Website interface for uploading TEM images, selecting grid holes, and manually correcting results.
+- `requirements.txt` — Python libraries needed to run and deploy the application.
+- `README.md` — Project description, workflow, and AI prompts.
 
-## How to Run
+## Results and Future Improvements
 
-Install the required libraries:
+I successfully continued my Day03 project, improved the website interface, and deployed the application online using Render.
 
-`py -m pip install -r requirements.txt`
+The website is now publicly accessible, and users can upload their own TEM images without installing Python.
 
-Run the application:
+However, the automatic detection is still preliminary and sometimes counts background noise as vesicles. The manual correction interface also needs improvement, especially for removing incorrect automatic detections.
 
-`py app.py`
+In the future, I would like to improve the detection accuracy, make manual corrections more reliable, and add an option to export the final vesicle count.
 
-Open the website:
+## Conclusion
 
-**[http://127.0.0.1:5000](http://127.0.0.1:5000)**
+In this assignment, I learned how to develop an existing Python project, improve a web interface, use GitHub for version control, and deploy a Flask application to a public server using Render.
