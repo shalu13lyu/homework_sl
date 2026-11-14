@@ -38,26 +38,6 @@ Render now runs my Flask application on a cloud server, allowing other people to
 
 **Public website:** [https://homework-sl.onrender.com/](https://homework-sl.onrender.com/)
 
-## Prompts I Used
-
-I used AI to help improve my application and understand how to publish it online.
-
-Some of my prompts were:
-
-> DAY 04 - assignment - continuing day 3.
-
-> Modify Day04/index.html — just give a new script that I will delete what I had and write again.
-
-> Can I do this part without paying — just add a code? If yes, I want to do it.
-
-> How to connect to Day04? I need a link to the configuration page.
-
-> Deploy failed.
-
-> I opened https://homework-sl.onrender.com/ successfully — so now it is public, what is happening?
-
-I also asked AI to explain why Gunicorn was needed and how GitHub, Flask, and Render work together.
-
 ## Project Files
 
 - `app.py` — Flask application that connects the website to the Python program.
