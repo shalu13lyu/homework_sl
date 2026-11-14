@@ -5,50 +5,105 @@ import numpy as np
 
 def count_vesicles(image, center_x, center_y, hole_radius):
     """
-    Detect vesicle candidates inside a selected
-    carbon-grid hole in a TEM image.
+    Detect approximately circular vesicle candidates
+    inside a selected TEM carbon-grid hole.
     """
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # Improve local contrast
+    # Improve contrast
     clahe = cv2.createCLAHE(
-        clipLimit=2.0,
+        clipLimit=1.5,
         tileGridSize=(8, 8)
     )
     enhanced = clahe.apply(gray)
 
-    # Reduce background noise
-    blurred = cv2.GaussianBlur(enhanced, (5, 5), 1.2)
-
-    # Detect circular vesicle candidates
-    circles = cv2.HoughCircles(
-        blurred,
-        cv2.HOUGH_GRADIENT,
-        dp=1,
-        minDist=10,
-        param1=80,
-        param2=15,
-        minRadius=4,
-        maxRadius=16
+    # Reduce small-scale image noise
+    smooth = cv2.bilateralFilter(
+        enhanced, 9, 35, 35
     )
 
+    # Detect dark circular boundaries
+    edges = cv2.Canny(smooth, 40, 90)
+
+    # Join small gaps in circular outlines
+    kernel = cv2.getStructuringElement(
+        cv2.MORPH_ELLIPSE, (3, 3)
+    )
+    edges = cv2.morphologyEx(
+        edges, cv2.MORPH_CLOSE, kernel
+    )
+
+    contours, _ = cv2.findContours(
+        edges,
+        cv2.RETR_LIST,
+        cv2.CHAIN_APPROX_SIMPLE
+    )
+
+    candidates = []
+
+    for contour in contours:
+        area = cv2.contourArea(contour)
+        perimeter = cv2.arcLength(contour, True)
+
+        if perimeter == 0:
+            continue
+
+        # Ignore very small and very large objects
+        if area < 35 or area > 1200:
+            continue
+
+        # Calculate shape circularity
+        circularity = 4 * np.pi * area / (perimeter ** 2)
+
+        if circularity < 0.75:
+            continue
+
+        # Calculate circle around the contour
+        (x, y), radius = cv2.minEnclosingCircle(contour)
+
+        if radius < 4 or radius > 20:
+            continue
+
+        # Check that the object is inside the grid hole
+        distance = np.hypot(
+            x - center_x,
+            y - center_y
+        )
+
+        if distance + radius >= hole_radius - 5:
+            continue
+
+        candidates.append((
+            int(round(x)),
+            int(round(y)),
+            int(round(radius)),
+            float(circularity)
+        ))
+
+    # Remove overlapping detections
+    # Keep higher-circularity candidates first
+    candidates.sort(key=lambda item: item[3], reverse=True)
+
     vesicles = []
+
+    for x, y, radius, circularity in candidates:
+        duplicate = False
+
+        for vx, vy, vr in vesicles:
+            distance = np.hypot(x - vx, y - vy)
+
+            if distance < max(radius, vr):
+                duplicate = True
+                break
+
+        if not duplicate:
+            vesicles.append((x, y, radius))
+
+    # Create annotated output
     result = image.copy()
 
-    if circles is not None:
-        for x, y, radius in np.round(circles[0]).astype(int):
-
-            distance = np.hypot(
-                x - center_x,
-                y - center_y
-            )
-
-            # Count only circles fully inside the grid hole
-            if distance + radius < hole_radius:
-                vesicles.append((x, y, radius))
-
-    # Draw the selected grid hole in yellow
+    # Selected carbon-grid hole in yellow
     cv2.circle(
         result,
         (center_x, center_y),
@@ -57,9 +112,8 @@ def count_vesicles(image, center_x, center_y, hole_radius):
         2
     )
 
-    # Draw detected vesicles and their numbers
-    for number, (x, y, radius) in enumerate(vesicles, start=1):
-
+    # Detected vesicles in green
+    for number, (x, y, radius) in enumerate(vesicles, 1):
         cv2.circle(
             result,
             (x, y),
@@ -71,20 +125,20 @@ def count_vesicles(image, center_x, center_y, hole_radius):
         cv2.putText(
             result,
             str(number),
-            (x + 5, y - 5),
+            (x + radius + 2, y),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.4,
+            0.35,
             (0, 0, 255),
             1
         )
 
-    # Write total count on the result image
+    # Add total count
     cv2.putText(
         result,
-        f"Detected vesicles: {len(vesicles)}",
-        (15, 30),
+        f"Detected: {len(vesicles)}",
+        (10, 25),
         cv2.FONT_HERSHEY_SIMPLEX,
-        0.7,
+        0.65,
         (0, 255, 0),
         2
     )
