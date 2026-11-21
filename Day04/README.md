@@ -59,3 +59,19 @@ In the future, I would like to improve the detection accuracy, make manual corre
 ## Conclusion
 
 In this assignment, I learned how to develop an existing Python project, improve a web interface, use GitHub for version control, and deploy a Flask application to a public server using Render.
+
+## Testing the Vesicle Detection Program
+
+For this assignment, I used pytest to write automated tests for the scientific computation in `detector.py`.
+
+I created a file called `test_detector.py` to test different situations, including empty images, synthetic circular structures, vesicles outside the selected carbon-grid hole, and the dimensions of the output image.
+
+I also added a test using a TEM image with a manually determined vesicle count to compare the automatic detection with the expected result.
+
+To run the tests:
+
+`py -m pip install pytest`
+
+`py -m pytest test_detector.py -v`
+
+These tests help identify problems in the vesicle-counting algorithm and evaluate its accuracy. The detection still requires further improvement and validation.
